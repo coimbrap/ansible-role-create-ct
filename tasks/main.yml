@@ -18,7 +18,7 @@
     vmid: "{{ ct_vmid }}"
     onboot: "{{ ct_onboot }}"
     unprivileged: "{{ ct_unprivileged }}"
-    netif: '{"net0":"name=eth0,ip=10.0.{{ ct_vlan }}.{{ ct_vmid }}/24,gw=10.0.{{ ct_vlan }}.254,bridge=vmbr0,tag={{ ct_vlan }}"}'
+    netif: '{"net0":"name=eth0,ip=10.0.{{ ct_vlan }}.{{ ct_vmid }}/24,gw=10.0.{{ ct_vlan }}.254,bridge={{ ct_if }},tag={{ ct_vlan }}"}'
     state: present
     timeout: 600
   delegate_to: localhost
