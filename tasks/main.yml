@@ -1,0 +1,41 @@
+# tasks file for roles/create_ct
+- include_vars: ../vars/pve_credentials.yml
+
+- name: Create LXC container
+  proxmox:
+    api_user: "{{ user_pve }}"
+    api_password: "{{ passwd_pve }}"
+    api_host: "{{ host_pve }}"
+    node: "{{ ct_node }}"
+    cpus: "{{ ct_cpus }}"
+    memory: "{{ ct_ram }}"
+    disk: "{{ ct_disk }}"
+    swap: "{{ ct_swap }}"
+    storage: "{{ ct_storage }}"
+    ostemplate: "{{ ct_template }}"
+    password: "{{ ct_passwd }}"
+    hostname: "{{ ct_name }}"
+    vmid: "{{ ct_vmid }}"
+    onboot: "{{ ct_onboot }}"
+    unprivileged: "{{ ct_unprivileged }}"
+    netif: '{"net0":"name=eth0,ip=10.0.{{ ct_vlan }}.{{ ct_vmid }}/24,gw=10.0.{{ ct_vlan }}.254,bridge=vmbr0,tag={{ ct_vlan }}"}'
+    state: present
+    timeout: 600
+  delegate_to: localhost
+  tags:
+    - create
+
+- name: Start Container
+  delegate_to: localhost
+  proxmox:
+    api_user: "{{ user_pve }}"
+    api_password: "{{ passwd_pve }}"
+    api_host: "{{ host_pve }}"
+    hostname: "{{ ct_name }}"
+    state: started
+  register: ct_ready
+  retries: 3
+  until: ct_ready is successful
+  delay: 5
+  tags:
+    - start
