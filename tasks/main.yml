@@ -18,7 +18,8 @@
     vmid: "{{ ct_vmid }}"
     onboot: "{{ ct_onboot }}"
     unprivileged: "{{ ct_unprivileged }}"
-    netif: '{"net0":"name=eth0,ip=10.0.{{ ct_vlan }}.{{ ct_vmid }}/24,gw=10.0.{{ ct_vlan }}.254,bridge={{ ct_if }},tag={{ ct_vlan }}"}'
+    netif: '{"net0":"name=eth0,ip6={{ ct_prefix6 }}:{{ ct_vlan }}:{{ ct_vmid }}/64,gw={{ ct_prefix6 }}::{{ ct_gw6_suffix }},bridge={{ ct_if }},tag={{ ct_vlan }}"}'
+    pubkey: "{{ ssh_pubkey_tmp }}"
     state: present
     timeout: 600
   delegate_to: localhost
