@@ -1,0 +1,31 @@
+- name: Set timezone
+  timezone:
+    name: Europe/Paris
+  tags:
+    - time
+
+- name: Apt Update
+  apt:
+    update_cache: yes
+  tags:
+    - upgrade
+
+- name: Apt Upgrade
+  apt:
+    upgrade: dist
+  tags:
+    - upgrade
+
+- name: Install utils
+  apt:
+    pkg: "{{ to_install }}"
+  tags:
+    - install
+
+- name: Unattended-Upgrades Activation
+  shell: |
+    echo unattended-upgrades unattended-upgrades/enable_auto_updates boolean true | debconf-set-selections
+    dpkg-reconfigure -f noninteractive unattended-upgrades
+    echo 'Unattended-Upgrade::Mail "root";' >> /etc/apt/apt.conf.d/50unattended-upgrades
+  tags:
+    - auto-upgrade

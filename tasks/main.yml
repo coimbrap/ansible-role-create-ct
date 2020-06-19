@@ -1,42 +1,8 @@
-# tasks file for roles/create_ct
-- include_vars: ../vars/pve_credentials.yml
+- import_tasks: create_start.yml
+  tags: full-create
 
-- name: Create LXC container
-  proxmox:
-    api_user: "{{ user_pve }}"
-    api_password: "{{ passwd_pve }}"
-    api_host: "{{ host_pve }}"
-    node: "{{ ct_node }}"
-    cpus: "{{ ct_cpus }}"
-    memory: "{{ ct_ram }}"
-    disk: "{{ ct_disk }}"
-    swap: "{{ ct_swap }}"
-    storage: "{{ ct_storage }}"
-    ostemplate: "{{ ct_template }}"
-    password: "{{ ct_passwd }}"
-    hostname: "{{ ct_name }}"
-    vmid: "{{ ct_vmid }}"
-    onboot: "{{ ct_onboot }}"
-    unprivileged: "{{ ct_unprivileged }}"
-    netif: '{"net0":"name=eth0,ip6={{ ct_prefix6 }}:{{ ct_vlan }}:{{ ct_vmid }}/64,gw={{ ct_prefix6 }}::{{ ct_gw6_suffix }},bridge={{ ct_if }},tag={{ ct_vlan }}"}'
-    pubkey: "{{ ssh_pubkey_temp }}"
-    state: present
-    timeout: 600
-  delegate_to: localhost
-  tags:
-    - create
+- import_tasks: config.yml
+  tags: full-config
 
-- name: Start Container
-  delegate_to: localhost
-  proxmox:
-    api_user: "{{ user_pve }}"
-    api_password: "{{ passwd_pve }}"
-    api_host: "{{ host_pve }}"
-    hostname: "{{ ct_name }}"
-    state: started
-  register: ct_ready
-  retries: 3
-  until: ct_ready is successful
-  delay: 5
-  tags:
-    - start
+- import_tasks: install.yml
+  tags: full-install

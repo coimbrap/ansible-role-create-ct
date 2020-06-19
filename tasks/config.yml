@@ -1,0 +1,13 @@
+- name: Apt proxy configuration
+  template:
+    src: "{{ apt_template }}"
+    dest: /etc/apt/apt.conf.d/01proxy
+  tags:
+    - apt-proxy
+
+- name: Http proxy configuration
+  template:
+    src: "{{ http_template }}"
+    dest: /root/.wgetrc
+  tags:
+    - http-proxy

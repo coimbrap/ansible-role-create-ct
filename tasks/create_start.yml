@@ -1,0 +1,65 @@
+# tasks file for roles/create_ct
+- include_vars: vars/pve_credentials.yml
+
+- name: Create LXC container
+  proxmox:
+    api_user: "{{ user_pve }}"
+    api_password: "{{ passwd_pve }}"
+    api_host: "{{ host_pve }}"
+    node: "{{ ct_node }}"
+    cpus: "{{ ct_cpus }}"
+    memory: "{{ ct_ram }}"
+    disk: "{{ ct_disk }}"
+    swap: "{{ ct_swap }}"
+    storage: "{{ ct_storage }}"
+    ostemplate: "{{ ct_template }}"
+    password: "{{ ct_passwd }}"
+    hostname: "{{ ct_name }}"
+    vmid: "{{ ct_vmid }}"
+    onboot: "{{ ct_onboot }}"
+    unprivileged: "{{ ct_unprivileged }}"
+    netif: {"net0":"name=eth0,{% if ct_prefix4 is defined %}ip={{ ct_prefix4 }}.{{ ct_vmid }}/24,gw={{ ct_prefix4 }}.{{ ct_gw4_suffix }},{% endif %}{% if ct_prefix6 is defined %}ip6={{ ct_prefix6 }}::{{ ct_vmid }}/64,gw6={{ ct_prefix6 }}::{{ ct_gw6_suffix }}{% endif %},bridge={{ ct_if }},tag={{ ct_vlan }}"}
+    pubkey: "{{ ssh_pubkey_temp }}"
+    state: present
+    timeout: 600
+  delegate_to: localhost
+  tags:
+    - create
+
+- name: Start Container
+  delegate_to: localhost
+  proxmox:
+    api_user: "{{ user_pve }}"
+    api_password: "{{ passwd_pve }}"
+    api_host: "{{ host_pve }}"
+    hostname: "{{ ct_name }}"
+    state: started
+  register: ct_ready
+  retries: 3
+  until: ct_ready is successful
+  delay: 5
+  tags:
+    - start
+
+- name: Add host to ssh config
+  template:
+    src: "{{ ssh_template }}"
+    dest: ../ssh/config.tmp
+  delegate_to: localhost
+  tags:
+    - ssh
+
+- name: Append ssh config
+  shell: |
+    if ! grep -q "{{ ct_name }}" ../ssh/config; then
+      cat ../ssh/config.tmp >> ../ssh/config
+    fi
+  delegate_to: localhost
+  tags:
+    - ssh
+
+- name: Remove temp file
+  shell: rm ../ssh/config.tmp
+  delegate_to: localhost
+  tags:
+    - ssh
