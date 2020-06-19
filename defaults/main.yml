@@ -1,0 +1,14 @@
+---
+ansible_ssh_private_key_file: "ssh/tmp_key"
+to_install: vim,net-tools,nmap,dnsutils,unattended-upgrades,apt-listchanges,wget,curl,git
+ct_cpus: 1
+ct_ram: 512
+ct_disk: 1
+ct_swap: 0
+ct_template: local:vztmpl/debian-10.0-standard_10.0-1_amd64.tar.gz
+ct_unprivileged: 1
+ssh_template: "ssh.j2"
+apt_template: "apt_proxy.j2"
+http_template: "http_proxy.j2"
+apt_proxy_port: 9999
+http_proxy_port: 3128
