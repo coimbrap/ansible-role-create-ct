@@ -1,7 +1,7 @@
 # tasks file for roles/create_ct
 - include_vars: vars/pve_credentials.yml
 
-- name: Create LXC container
+- name: create | create LXC container
   proxmox:
     api_user: "{{ user_pve }}"
     api_password: "{{ passwd_pve }}"
@@ -26,8 +26,7 @@
   tags:
     - create
 
-- name: Start Container
-  delegate_to: localhost
+- name: create | start Container
   proxmox:
     api_user: "{{ user_pve }}"
     api_password: "{{ passwd_pve }}"
@@ -38,10 +37,11 @@
   retries: 3
   until: ct_ready is successful
   delay: 5
+  delegate_to: localhost
   tags:
     - start
 
-- name: Add host to ssh config
+- name: create | add host to ssh config
   template:
     src: "{{ ssh_template }}"
     dest: ../ssh/config.tmp
@@ -49,7 +49,7 @@
   tags:
     - ssh
 
-- name: Append ssh config
+- name: create | append ssh config
   shell: |
     if ! grep -q "{{ ct_name }}" ../ssh/config; then
       cat ../ssh/config.tmp >> ../ssh/config
@@ -58,7 +58,7 @@
   tags:
     - ssh
 
-- name: Remove temp file
+- name: create | remove temp file
   shell: rm ../ssh/config.tmp
   delegate_to: localhost
   tags:

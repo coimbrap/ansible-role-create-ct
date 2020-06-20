@@ -1,13 +1,19 @@
-- name: Apt proxy configuration
+- name: config | apt proxy configuration
   template:
     src: "{{ apt_template }}"
     dest: /etc/apt/apt.conf.d/01proxy
   tags:
     - apt-proxy
 
-- name: Http proxy configuration
+- name: config | http proxy configuration
   template:
     src: "{{ http_template }}"
     dest: /root/.wgetrc
   tags:
     - http-proxy
+
+- name: config | set timezone
+  timezone:
+    name: Europe/Paris
+  tags:
+    - time

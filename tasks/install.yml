@@ -1,28 +1,17 @@
-- name: Set timezone
-  timezone:
-    name: Europe/Paris
-  tags:
-    - time
-
-- name: Apt Update
+- name: install | apt upgrade
   apt:
     update_cache: yes
-  tags:
-    - upgrade
-
-- name: Apt Upgrade
-  apt:
     upgrade: dist
   tags:
     - upgrade
 
-- name: Install utils
+- name: install | install utils
   apt:
     pkg: "{{ to_install }}"
   tags:
     - install
 
-- name: Unattended-Upgrades Activation
+- name: install | unattended-upgrades activation
   shell: |
     echo unattended-upgrades unattended-upgrades/enable_auto_updates boolean true | debconf-set-selections
     dpkg-reconfigure -f noninteractive unattended-upgrades

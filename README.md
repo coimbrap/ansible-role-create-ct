@@ -1,4 +1,4 @@
-# ansible-role-create-ct
+# Ansible Role - Create CT
 
 Role Ansible pour créer des conteneurs LXC sous Proxmox.
 
@@ -54,3 +54,11 @@ ct_storage: local-zfs
 #ct_swap: 0
 #ct_unprivileged: 1
 ```
+
+### License
+
+GPLv3
+
+### Authors Informations
+
+Mablr / Pierre Coimbra
