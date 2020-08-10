@@ -1,6 +1,6 @@
 
 Host {{ ct_name }}
     Hostname {% if ct_prefix6 is defined %}{{ ct_prefix6 }}::{{ ct_vmid }}{% else %} {{ ct_prefix4 }}.{{ ct_vmid }}{% endif %}
-
+    
     User root
-    ProxyJump {{ node_bastion }}
+    {% if node_bastion is defined %}ProxyJump {{ node_bastion }}{% endif %}

@@ -1,3 +1,5 @@
+{% if proxy_ip is defined and apt_proxy_port is defined %}
 Acquire::http {
  Proxy "http://[{{proxy_ip}}]:{{apt_proxy_port}}";
 };
+{% endif %}

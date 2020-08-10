@@ -1,3 +1,5 @@
+{% if proxy_ip is defined and http_proxy_port is defined %}
 http_proxy = http://[{{proxy_ip}}]:{{http_proxy_port}}/
 https_proxy = http://[{{proxy_ip}}]:{{http_proxy_port}}/
 use_proxy = on
+{% endif %}
