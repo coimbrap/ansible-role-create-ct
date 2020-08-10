@@ -14,7 +14,7 @@ Avec le playbook fourni on crée tout les conteneurs du groupe lxc, pour limité
     - ssh_install
 ```
 
-### playbooks/vars/pve_credentials.yml
+### group_vars/all/pve.yml (vault)
 ```yaml
 user_pve: root@pam
 passwd_pve: strongpass
@@ -27,12 +27,12 @@ to_install: vim,net-tools,nmap,dnsutils,ferm,unattended-upgrades,apt-listchanges
 proxy_ip: "2001:bc8:32d7:1509::f00d"
 ```
 
-### host_vars/vault.yml
+### host_vars/atalante/vault.yml
 ```yaml
 ct_passwd: strongpass
 ```
 
-### host_vars/atalante.yml
+### host_vars/atalante/atalante.yml
 ```yaml
 ---
 # [Zeus ; Jupiter]

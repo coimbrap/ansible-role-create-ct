@@ -1,6 +1,3 @@
-# tasks file for roles/create_ct
-- include_vars: vars/pve_credentials.yml
-
 - name: create | create LXC container
   proxmox:
     api_user: "{{ user_pve }}"

@@ -1,7 +1,6 @@
-# meta file for haproxy
 ---
 galaxy_info:
-  role_name: haproxy
+  role_name: create-ct
   author: Elukerio 
   description: Creates LXC containers in Proxmox
   license: GPLv3
