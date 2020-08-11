@@ -41,22 +41,24 @@
 - name: create | add host to ssh config
   template:
     src: "{{ ssh_template }}"
-    dest: ../ssh/config.tmp
+    dest: "../ssh/config-{{ ct_name }}"
   delegate_to: localhost
   tags:
     - ssh
 
 - name: create | append ssh config
   shell: |
-    if ! grep -q "{{ ct_name }}" ../ssh/config; then
-      cat ../ssh/config.tmp >> ../ssh/config
+    if ! grep -q "Host {{ ct_name }}" ../ssh/config; then
+      cat ../ssh/config-{{ ct_name }} >> ../ssh/config
     fi
   delegate_to: localhost
   tags:
     - ssh
 
 - name: create | remove temp file
-  shell: rm ../ssh/config.tmp
+  file:
+    path: "../ssh/config-{{ ct_name }}"
+    state: absent
   delegate_to: localhost
   tags:
     - ssh
