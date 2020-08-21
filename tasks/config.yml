@@ -8,7 +8,7 @@
 - name: config | http proxy configuration
   template:
     src: "{{ http_template }}"
-    dest: /root/.wgetrc
+    dest: /etc/profile.d/proxy.sh
   tags:
     - http-proxy
 
