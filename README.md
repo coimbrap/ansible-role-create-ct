@@ -34,25 +34,16 @@ ct_passwd: strongpass
 
 ### host_vars/atalante/atalante.yml
 ```yaml
----
-# [Zeus ; Jupiter]
 ct_node : sigma
 node_bastion: minos
 ct_vmid: 110
 ct_name: test3
 ct_onboot: 0
 ct_if: vmbr1
-#[20 -> DMZ ; 30 -> LOC ; 50 -> ADMIN ; 60 -> DIRTY]
 ct_vlan: 20
-#[2001:bc8:32d7:1509 ; fd2e:9d2b:16eb:VLAN]
 ct_prefix6: "2001:bc8:32d7:1509"
 ct_prefix4: "10.0.0"
 ct_storage: local-zfs
-#ct_cpus: 1
-#ct_ram: 512
-#ct_disk: 1
-#ct_swap: 0
-#ct_unprivileged: 1
 ```
 
 ### License

@@ -11,6 +11,18 @@
   tags:
     - install
 
+- name: install | git setup http proxy
+  git_config:
+    name="{{ item.name }}"
+    value="{{ item.value }}"
+    scope=global
+  with_items:
+    - {name: "http.proxy",  value: "http://{{proxy_ip}}:{{http_proxy_port}}" }
+    - {name: "https.proxy", value: "http://{{proxy_ip}}:{{http_proxy_port}}" }
+  when: connect_to_proxy|bool
+  tags:
+    - http-proxy
+
 - name: install | unattended-upgrades activation
   shell: |
     echo unattended-upgrades unattended-upgrades/enable_auto_updates boolean true | debconf-set-selections
@@ -18,3 +30,12 @@
     echo 'Unattended-Upgrade::Mail "root";' >> /etc/apt/apt.conf.d/50unattended-upgrades
   tags:
     - auto-upgrade
+
+- name: install | recreate ssh keys
+  shell: |
+    rm -f /etc/ssh/ssh_host_*key*
+    ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N "" < /dev/null
+    ssh-keygen -t rsa -b 4096 -f /etc/ssh/ssh_host_rsa_key -N "" < /dev/null
+  run_once: true
+  tags:
+    - sshsss

@@ -1,4 +1,4 @@
 {% if proxy_ip is defined and http_proxy_port is defined %}
-export http_proxy=http://[{{proxy_ip}}]:{{http_proxy_port}}/
-export https_proxy=http://[{{proxy_ip}}]:{{http_proxy_port}}/
+export HTTP_PROXY=http://{{proxy_ip}}:{{http_proxy_port}}/
+export HTTPS_PROXY=http://{% if proxy_address_type is defined and proxy_address_type == ipv6 %}[{{proxy_ip}}]{% else %}{{proxy_ip}}{% endif %}:{{http_proxy_port}}/
 {% endif %}

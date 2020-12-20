@@ -2,7 +2,9 @@
   tags: full-create
 
 - import_tasks: config.yml
+  when: ssh_access|bool
   tags: full-config
 
 - import_tasks: install.yml
+  when: ssh_access|bool
   tags: full-install

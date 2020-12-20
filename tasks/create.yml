@@ -1,3 +1,5 @@
+- include_vars: vars/pve_credentials.yml
+
 - name: create | create LXC container
   proxmox:
     api_user: "{{ user_pve }}"
@@ -48,6 +50,10 @@
 
 - name: create | append ssh config
   shell: |
+    erase={{ erase_ssh }}
+    if [ "$erase" ]; then
+      sed -i '/Host {{ ct_name }}/,/^\s*$/d' ../ssh/config
+    fi
     if ! grep -q "Host {{ ct_name }}" ../ssh/config; then
       cat ../ssh/config-{{ ct_name }} >> ../ssh/config
     fi

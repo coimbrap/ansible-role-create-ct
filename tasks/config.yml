@@ -2,6 +2,7 @@
   template:
     src: "{{ apt_template }}"
     dest: /etc/apt/apt.conf.d/01proxy
+  when: connect_to_proxy|bool
   tags:
     - apt-proxy
 
@@ -9,6 +10,7 @@
   template:
     src: "{{ http_template }}"
     dest: /etc/profile.d/proxy.sh
+  when: connect_to_proxy|bool
   tags:
     - http-proxy
 
