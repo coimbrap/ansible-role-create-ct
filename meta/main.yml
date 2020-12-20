@@ -2,7 +2,7 @@
 galaxy_info:
   role_name: create-ct
   author: Elukerio 
-  description: Creates LXC containers in Proxmox
+  description: Ansible role to create LXC containers in Proxmox
   license: GPLv3
   min_ansible_version: 2.6.0
   platforms:
